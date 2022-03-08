@@ -28,27 +28,27 @@ services:
       - ./broker/data:/data
       - ./broker/logs:/logs
 
-#  connect:
-#    image: debezium/connect:1.9
-#    hostname: connect
-#    container_name: connect
-#    ports:
-#      - "8083:8083"
-#    environment:
-#      - GROUP_ID=1
-#      - CONFIG_STORAGE_TOPIC=my_connect_configs
-#      - OFFSET_STORAGE_TOPIC=my_connect_offsets
-#      - STATUS_STORAGE_TOPIC=my_connect_statuses
-#      - BOOTSTRAP_SERVER=kafka:9092
-#    depends_on:
-#      - kafka
-#
-#  postgres:
-#    image: debezium/example-postgres:1.9
-#    hostname: postgres
-#    container_name: postgres
-#    ports:
-#      - "5432:5432"
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
+  postgres:
+    image: debezium/example-postgres:1.9
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  connect:
+    image: debezium/connect:1.9
+    hostname: connect
+    container_name: connect
+    ports:
+      - "8083:8083"
+    environment:
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+      - BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+      - kafka
