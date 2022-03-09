@@ -6,7 +6,7 @@ def register_connector(url, connector_config):
         r = requests.post(url=url, json=connector_config)
 
         if r.status_code == 201:
-            return "Success"
+            print("Success")
         else:
             print(r.status_code)
             print(r.json())
