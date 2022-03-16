@@ -29,7 +29,7 @@ services:
       - ./broker/logs:/logs
 
   postgres:
-    image: debezium/example-postgres:1.9
+    image: postgres:12
     hostname: postgres
     container_name: postgres
     ports:
@@ -37,6 +37,16 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+#  postgres:
+#    image: debezium/example-postgres:1.9
+#    hostname: postgres
+#    container_name: postgres
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=postgres
 
   connect:
     image: debezium/connect:1.9
