@@ -24,12 +24,11 @@ if __name__ == "__main__":
         "database.hostname": "postgres",
         "database.port": "5432",
         "database.user": "debezium_user",
-        "database.password": "postgres",
+        "database.password": "debezium",
         "database.dbname": "postgres",
         "database.server.name": "debezium",
         "schema.whitelist": "inventory",
-        "publication.name": "debeziumpub",
-        "publication.autocreate.mode": "filtered"
+        "publication.name": "inventorypub"
       }
     }
 

@@ -5,6 +5,8 @@ services:
     image: debezium/zookeeper:1.9
     hostname: zookeeper
     container_name: zookeeper
+    networks:
+      - cdc_network
     ports:
       - "2181:2181"
       - "2888:2888"
@@ -18,6 +20,8 @@ services:
     image: debezium/kafka:1.9
     hostname: kafka
     container_name: kafka
+    networks:
+      - cdc_network
     depends_on:
       - zookeeper
     ports:
@@ -25,36 +29,29 @@ services:
     environment:
       - ZOOKEEPER_CONNECT=zookeeper:2181
     volumes:
-      - ./broker/data:/data
-      - ./broker/logs:/logs
+      - ./broker/data:/kafka/data
+      - ./broker/logs:/kafka/logs
 
   postgres:
     image: postgres:12
     hostname: postgres
     container_name: postgres
+    networks:
+      - cdc_network
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-#    volumes:
-#      - ./postgres/data:/var/lib/postgresql/data
-#      - ./postgres/init:/docker-entrypoint-initdb.d
-
-#  postgres:
-#    image: debezium/example-postgres:1.9
-#    hostname: postgres
-#    container_name: postgres
-#    ports:
-#      - "5432:5432"
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./postgres/init:/docker-entrypoint-initdb.d
 
   connect:
     image: debezium/connect:1.9
     hostname: connect
     container_name: connect
+    networks:
+      - cdc_network
     ports:
       - "8083:8083"
     environment:
@@ -72,6 +69,8 @@ services:
     command:
       - --workers
       - '1'
+    networks:
+      - cdc_network
     ports:
       - "6875:6875"
 
@@ -95,3 +94,7 @@ services:
 #    ports:
 #      - "9092:9092"
 #      - "29092:29092"
+
+networks:
+  cdc_network:
+    name: cdc_event_driven_network
