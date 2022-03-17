@@ -3,13 +3,13 @@ import requests
 
 def register_connector(url, connector_config):
     try:
-        r = requests.post(url=url, json=connector_config)
+        response = requests.post(url=url, json=connector_config)
 
-        if r.status_code == 201:
-            print("Success")
+        if response.status_code == 201:
+            print(response)
         else:
-            print(r.status_code)
-            print(r.json())
+            print(response.status_code)
+            print(response.json())
 
     except Exception as e:
         raise e
@@ -23,12 +23,12 @@ if __name__ == "__main__":
         "plugin.name": "pgoutput",
         "database.hostname": "postgres",
         "database.port": "5432",
-        "database.user": "postgres",
+        "database.user": "debezium_user",
         "database.password": "postgres",
         "database.dbname": "postgres",
         "database.server.name": "debezium",
-        "schema.whitelist": "tracking",
-        "publication.name": "mytestpub",
+        "schema.whitelist": "inventory",
+        "publication.name": "debeziumpub",
         "publication.autocreate.mode": "filtered"
       }
     }

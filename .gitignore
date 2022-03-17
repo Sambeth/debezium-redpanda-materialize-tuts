@@ -1,3 +1,5 @@
 .idea/
 zookeeper/
+broker/
+postgres/
 *.txt
