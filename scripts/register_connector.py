@@ -28,7 +28,11 @@ if __name__ == "__main__":
         "database.dbname": "postgres",
         "database.server.name": "debezium",
         "schema.whitelist": "inventory",
-        "publication.name": "inventorypub"
+        "publication.name": "inventorypub",
+        # "transforms": "filter",
+        # "transforms.filter.type": "io.debezium.transforms.Filter",
+        # "transforms.filter.language": "jsr223.groovy",
+        # "transforms.filter.condition": "value.op == 'c' && value.op == 'u'"
       }
     }
 

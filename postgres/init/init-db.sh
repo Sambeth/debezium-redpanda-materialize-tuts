@@ -14,6 +14,8 @@ psql -v ON_ERROR_STOP=1 --username "" --dbname "" <<-EOSQL
 		  CONSTRAINT delivery_id_pk PRIMARY KEY (delivery_id)
 		);
 
+	ALTER TABLE inventory.deliveries REPLICA IDENTITY FULL;
+
 	CREATE PUBLICATION inventorypub FOR TABLE inventory.deliveries;
 
   CREATE USER debezium_user WITH PASSWORD 'debezium' REPLICATION LOGIN;
