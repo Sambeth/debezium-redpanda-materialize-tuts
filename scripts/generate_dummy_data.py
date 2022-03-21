@@ -1,19 +1,22 @@
 import random
+import time
 
 import psycopg2
-from faker import Faker
 
 
-def connect():
+def transact(query):
     conn = None
 
     try:
         conn = psycopg2.connect(host="localhost", database="postgres", user="postgres", password="postgres")
         cur = conn.cursor()
-        cur.execute("SELECT version()")
 
-        db_version = cur.fetchone()
-        print(db_version)
+        cur.execute(query)
+
+        product_info = cur.fetchone()
+        print(product_info)
+
+        conn.commit()
 
         cur.close()
 
@@ -26,7 +29,36 @@ def connect():
             print("Closed connection!!")
 
 
+def insert_products(products):
+
+    for product_id, amount in products.items():
+        sql_insert = f"""
+            INSERT INTO inventory.products(id, amount)
+            VALUE ('{product_id}', '{amount}');
+        """
+        transact(sql_insert)
+
+
+def update_product(product_id, amount):
+
+    sql_update = f"""
+           UPDATE inventory.products(id, amount)
+           SET amount = {amount}
+           WHERE id = '{product_id}';
+       """
+    transact(sql_update)
+
+
 if __name__ == "__main__":
-    connect()
-    for i in range(20):
-        print(random.randint(0, 9), random.randint(10, 100))
+    products_dict = {
+        'pen': 10,
+        'pencil': 5,
+        'eraser': 6,
+        'book': 9,
+        'sharpener': 15
+    }
+    insert_products(products_dict)
+
+    while True:
+        time.sleep(5)
+        update_product(random.choice(list(products_dict)), random.randint(0, 50))
