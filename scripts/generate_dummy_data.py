@@ -27,8 +27,8 @@ def insert_products(products):
 
     for product_id, amount in products.items():
         sql_insert = f"""
-            INSERT INTO inventory.products(product_id, amount)
-            VALUES ('{product_id}', {amount})
+            INSERT INTO inventory.products(product_id, amount, created_at)
+            VALUES ('{product_id}', {amount}, NOW()::timestamp)
             RETURNING product_id;
         """
         transact(sql_insert, "Created")
@@ -38,7 +38,7 @@ def update_product(product_id, amount):
 
     sql_update = f"""
            UPDATE inventory.products
-           SET amount = {amount}
+           SET amount = {amount}, updated_at = NOW()::timestamp
            WHERE product_id = '{product_id}'
            RETURNING product_id;
        """
