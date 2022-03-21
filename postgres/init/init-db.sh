@@ -6,17 +6,15 @@ psql -v ON_ERROR_STOP=1 --username "" --dbname "" <<-EOSQL
 
   CREATE SCHEMA IF NOT EXISTS inventory;
 
-  CREATE TABLE inventory.deliveries
-		( delivery_id integer NOT NULL,
-		  delivery_date date NOT NULL,
-		  sender varchar(255),
-		  receiver varchar(255),
-		  CONSTRAINT delivery_id_pk PRIMARY KEY (delivery_id)
+  CREATE TABLE inventory.products
+		( product_id varchar(255) NOT NULL,
+		  amount integer NOT NULL,
+		  CONSTRAINT product_id_pk PRIMARY KEY (product_id)
 		);
 
-	ALTER TABLE inventory.deliveries REPLICA IDENTITY FULL;
+	ALTER TABLE inventory.products REPLICA IDENTITY FULL;
 
-	CREATE PUBLICATION inventorypub FOR TABLE inventory.deliveries;
+	CREATE PUBLICATION inventorypub FOR TABLE inventory.products;
 
   CREATE USER debezium_user WITH PASSWORD 'debezium' REPLICATION LOGIN;
 
