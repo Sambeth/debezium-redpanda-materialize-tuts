@@ -25,20 +25,20 @@ def transact(query, action):
 
 def insert_products(products):
 
-    for product_id, amount in products.items():
+    for product_id, quantity in products.items():
         sql_insert = f"""
-            INSERT INTO inventory.products(product_id, amount, created_at)
-            VALUES ('{product_id}', {amount}, NOW()::timestamp)
+            INSERT INTO inventory.products(product_id, quantity, created_at, updated_at)
+            VALUES ('{product_id}', {quantity}, NOW()::timestamp, NOW()::timestamp)
             RETURNING product_id;
         """
         transact(sql_insert, "Created")
 
 
-def update_product(product_id, amount):
+def update_product(product_id, quantity):
 
     sql_update = f"""
            UPDATE inventory.products
-           SET amount = {amount}, updated_at = NOW()::timestamp
+           SET quantity = {quantity}, updated_at = NOW()::timestamp
            WHERE product_id = '{product_id}'
            RETURNING product_id;
        """

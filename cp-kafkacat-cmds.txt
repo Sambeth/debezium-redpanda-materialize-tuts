@@ -3,4 +3,4 @@ list kafka topics
 sudo docker run --rm --tty --network=cdc_event_driven_network confluentinc/cp-kafkacat kafkacat -b kafka:9092 -L
 
 consume kafka topic
-sudo docker run --rm --tty --network=cdc_event_driven_network confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -K: -f '\nKey (%K bytes): %k\t\nValue (%S bytes): %s\n\Partition: %p\tOffset: %o\n--\n' -t debezium.inventory.deliveries
+sudo docker run --rm --tty --network=cdc_event_driven_network confluentinc/cp-kafkacat kafkacat -b kafka:9092 -C -K: -f '\nKey (%K bytes): %k\t\nValue (%S bytes): %s\n\Partition: %p\tOffset: %o\n--\n' -t debezium.inventory.products

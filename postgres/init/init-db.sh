@@ -8,7 +8,7 @@ psql -v ON_ERROR_STOP=1 --username "" --dbname "" <<-EOSQL
 
   CREATE TABLE inventory.products
 		( product_id varchar(255) NOT NULL,
-		  amount integer NOT NULL,
+		  quantity integer NOT NULL,
 		  created_at TIMESTAMP,
 		  updated_at TIMESTAMP,
 		  CONSTRAINT product_id_pk PRIMARY KEY (product_id)

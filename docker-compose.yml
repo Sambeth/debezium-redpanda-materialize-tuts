@@ -66,6 +66,7 @@ services:
   materialize:
     image: materialize/materialized:v0.22.0
     container_name: materialize
+    hostname: materialize
     command:
       - --workers
       - '1'

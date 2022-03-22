@@ -1,0 +1,27 @@
+-- CREATE streaming source
+CREATE SOURCE kafka_cdc_inventory_products
+	FROM KAFKA BROKER 'kafka:9092' TOPIC 'debezium.inventory.products'
+	FORMAT TEXT;
+
+SHOW COLUMNS FROM kafka_cdc_inventory_products;
+
+CREATE MATERIALIZED VIEW materialized_products_inventory AS
+  SELECT
+    ((data::jsonb->'payload'->>'after')::jsonb->>'product_id') AS product_id,
+	((data::jsonb->'payload'->>'after')::jsonb->>'quantity')::int AS quantity,
+	to_timestamp( ((data::jsonb->'payload'->>'after')::jsonb->>'created_at')::bigint / 1000000) AS created_at,
+	to_timestamp( ((data::jsonb->'payload'->>'after')::jsonb->>'updated_at')::bigint / 1000000) AS updated_at
+  FROM (SELECT text::jsonb AS data FROM kafka_cdc_inventory_products);
+
+ CREATE MATERIALIZED VIEW current_products_inventory AS
+ SELECT product_id,
+		quantity
+	FROM (
+	SELECT
+	    product_id,
+		quantity,
+		updated_at,
+		ROW_NUMBER () OVER (PARTITION BY product_id ORDER BY updated_at desc) AS row_number
+	  FROM materialized_products_inventory
+	 ORDER BY product_id) AS t
+	WHERE row_number = 1;
