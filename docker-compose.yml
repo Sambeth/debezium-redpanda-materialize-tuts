@@ -75,6 +75,16 @@ services:
     ports:
       - "6875:6875"
 
+  metabase:
+    image: metabase/metabase:v0.42.2
+    container_name: metabase
+    networks:
+      - cdc_network
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
 #  redpanda:
 #    command:
 #      - redpanda
